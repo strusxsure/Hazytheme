@@ -1,3 +1,4 @@
+import HazySidebar from "@/components/hazy/HazySidebar";
 import React from 'react';
 import { NavLink, Route, Switch } from 'react-router-dom';
 import NavigationBar from '@/components/NavigationBar';
@@ -13,6 +14,9 @@ export default () => {
     const location = useLocation();
 
     return (
+        <div className={"flex min-h-screen"}>
+            <HazySidebar />
+            <div className={"flex-1 pl-[72px] md:pl-[260px] transition-all"}>
         <>
             <NavigationBar />
             {location.pathname.startsWith('/account') && (
@@ -45,6 +49,7 @@ export default () => {
                     </Switch>
                 </React.Suspense>
             </TransitionRouter>
-        </>
+        </div>
+        </div>
     );
 };

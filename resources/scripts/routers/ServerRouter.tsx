@@ -1,3 +1,4 @@
+import HazySidebar from "@/components/hazy/HazySidebar";
 import TransferListener from '@/components/server/TransferListener';
 import React, { useEffect, useState } from 'react';
 import { NavLink, Route, Switch, useRouteMatch } from 'react-router-dom';
@@ -57,12 +58,18 @@ export default () => {
             setError(httpErrorToHuman(error));
         });
 
-        return () => {
+        return (
+        <div className={"flex min-h-screen"}>
+            <HazySidebar />
+            <div className={"flex-1 pl-[72px] md:pl-[260px] transition-all"}>) => {
             clearServerState();
         };
     }, [match.params.id]);
 
     return (
+        <div className={"flex min-h-screen"}>
+            <HazySidebar />
+            <div className={"flex-1 pl-[72px] md:pl-[260px] transition-all"}>
         <React.Fragment key={'server-router'}>
             <NavigationBar />
             {!uuid || !id ? (
@@ -123,6 +130,7 @@ export default () => {
                     )}
                 </>
             )}
-        </React.Fragment>
+        </div>
+        </div>
     );
 };

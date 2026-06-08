@@ -34,8 +34,10 @@
             <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
             <![endif]-->
         @show
-    </head>
+        <link href="{{ asset("css/hazytheme.css") }}" rel="stylesheet">
+</head>
     <body class="hold-transition skin-blue fixed sidebar-mini">
+    <div class="hazy-orb-1"></div><div class="hazy-orb-2"></div><div class="hazy-orb-3"></div>
         <div class="wrapper">
             <header class="main-header">
                 <a href="{{ route('index') }}" class="logo">

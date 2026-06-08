@@ -35,8 +35,10 @@
         @yield('assets')
 
         @include('layouts.scripts')
-    </head>
+        <link href="{{ asset("css/hazytheme.css") }}" rel="stylesheet">
+</head>
     <body class="{{ $css['body'] ?? 'bg-neutral-50' }}">
+    <div class="hazy-orb-1"></div><div class="hazy-orb-2"></div><div class="hazy-orb-3"></div>
         @section('content')
             @yield('above-container')
             @yield('container')
