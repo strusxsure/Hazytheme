@@ -10,8 +10,15 @@ const HazyButton = ({ variant = 'primary', isLoading, children, className = '', 
         glass: 'glass hover:bg-white/10 text-white border-white/10',
     };
     return (
-        <motion.button whileTap={{ scale: 0.96 }} className={`relative px-6 py-2.5 rounded-xl font-semibold transition-all duration-200 flex items-center justify-center space-x-2 shadow-lg disabled:opacity-50 ${v[variant] || v.primary} ${className}`} disabled={isLoading} {...props}>
-            {isLoading && <Loader2 size={18} className="animate-spin" />}
+        <motion.button
+            whileTap={{ scale: 0.96 }}
+            className={`relative px-6 py-2.5 rounded-xl font-semibold transition-all duration-200 flex items-center justify-center space-x-2 shadow-lg disabled:opacity-50 ${
+                v[variant] || v.primary
+            } ${className}`}
+            disabled={isLoading}
+            {...props}
+        >
+            {isLoading && <Loader2 size={18} className='animate-spin' />}
             <span className={isLoading ? 'opacity-0' : 'opacity-100'}>{children}</span>
         </motion.button>
     );

@@ -1,4 +1,4 @@
-import HazySidebar from "@/components/hazy/HazySidebar";
+import HazySidebar from '@/components/hazy/HazySidebar';
 import React from 'react';
 import { NavLink, Route, Switch } from 'react-router-dom';
 import NavigationBar from '@/components/NavigationBar';
@@ -14,42 +14,41 @@ export default () => {
     const location = useLocation();
 
     return (
-        <div className={"flex min-h-screen"}>
+        <div className={'flex min-h-screen'}>
             <HazySidebar />
-            <div className={"flex-1 pl-[72px] md:pl-[260px] transition-all"}>
-        <>
-            <NavigationBar />
-            {location.pathname.startsWith('/account') && (
-                <SubNavigation>
-                    <div>
-                        {routes.account
-                            .filter((route) => !!route.name)
-                            .map(({ path, name, exact = false }) => (
-                                <NavLink key={path} to={`/account/${path}`.replace('//', '/')} exact={exact}>
-                                    {name}
-                                </NavLink>
-                            ))}
-                    </div>
-                </SubNavigation>
-            )}
-            <TransitionRouter>
-                <React.Suspense fallback={<Spinner centered />}>
-                    <Switch location={location}>
-                        <Route path={'/'} exact>
-                            <DashboardContainer />
-                        </Route>
-                        {routes.account.map(({ path, component: Component }) => (
-                            <Route key={path} path={`/account/${path}`.replace('//', '/')} exact>
-                                <Component />
+            <div className={'flex-1 pl-[72px] md:pl-[260px] transition-all'}>
+                <NavigationBar />
+                {location.pathname.startsWith('/account') && (
+                    <SubNavigation>
+                        <div>
+                            {routes.account
+                                .filter((route) => !!route.name)
+                                .map(({ path, name, exact = false }) => (
+                                    <NavLink key={path} to={`/account/${path}`.replace('//', '/')} exact={exact}>
+                                        {name}
+                                    </NavLink>
+                                ))}
+                        </div>
+                    </SubNavigation>
+                )}
+                <TransitionRouter>
+                    <React.Suspense fallback={<Spinner centered />}>
+                        <Switch location={location}>
+                            <Route path={'/'} exact>
+                                <DashboardContainer />
                             </Route>
-                        ))}
-                        <Route path={'*'}>
-                            <NotFound />
-                        </Route>
-                    </Switch>
-                </React.Suspense>
-            </TransitionRouter>
-        </div>
+                            {routes.account.map(({ path, component: Component }) => (
+                                <Route key={path} path={`/account/${path}`.replace('//', '/')} exact>
+                                    <Component />
+                                </Route>
+                            ))}
+                            <Route path={'*'}>
+                                <NotFound />
+                            </Route>
+                        </Switch>
+                    </React.Suspense>
+                </TransitionRouter>
+            </div>
         </div>
     );
 };
