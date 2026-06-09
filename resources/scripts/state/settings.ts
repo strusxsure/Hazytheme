@@ -7,6 +7,12 @@ export interface SiteSettings {
         enabled: boolean;
         siteKey: string;
     };
+    hazytheme?: {
+        primary_color: string;
+        animation: boolean;
+        sidebar_power: boolean;
+        dark_mode: boolean;
+    };
 }
 
 export interface SettingsStore {

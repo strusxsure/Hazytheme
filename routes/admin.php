@@ -74,6 +74,9 @@ Route::group(['prefix' => 'settings'], function () {
     Route::patch('/', [Admin\Settings\IndexController::class, 'update']);
     Route::patch('/mail', [Admin\Settings\MailController::class, 'update']);
     Route::patch('/advanced', [Admin\Settings\AdvancedController::class, 'update']);
+
+    Route::get('/hazytheme', [Admin\Settings\HazyThemeController::class, 'index'])->name('admin.settings.hazytheme');
+    Route::patch('/hazytheme', [Admin\Settings\HazyThemeController::class, 'update']);
 });
 
 /*

@@ -1,4 +1,4 @@
-import React, { lazy } from 'react';
+import React, { lazy, useEffect } from 'react';
 import { hot } from 'react-hot-loader/root';
 import { Route, Router, Switch } from 'react-router-dom';
 import { StoreProvider } from 'easy-peasy';
@@ -40,6 +40,22 @@ setupInterceptors(history);
 
 const App = () => {
     const { PterodactylUser, SiteConfiguration } = window as ExtendedWindow;
+
+    useEffect(() => {
+        if (SiteConfiguration?.hazytheme) {
+            const root = document.documentElement;
+            root.style.setProperty('--hazy-primary', SiteConfiguration.hazytheme.primary_color);
+
+            if (SiteConfiguration.hazytheme.dark_mode === false) {
+                root.style.setProperty('--hazy-bg', '#f8fafc');
+                root.style.setProperty('--hazy-text', '#0f172a');
+                root.style.setProperty('--hazy-card', 'rgba(255, 255, 255, 0.8)');
+                root.style.setProperty('--hazy-sidebar', 'rgba(255, 255, 255, 0.9)');
+                root.style.setProperty('--hazy-glass-border', 'rgba(0, 0, 0, 0.1)');
+            }
+        }
+    }, [SiteConfiguration]);
+
     if (PterodactylUser && !store.getState().user.data) {
         store.getActions().user.setUserData({
             uuid: PterodactylUser.uuid,
@@ -63,6 +79,13 @@ const App = () => {
             <StoreProvider store={store}>
                 <ProgressBar />
                 <div css={tw`mx-auto w-auto`}>
+                    {SiteConfiguration?.hazytheme?.animation && (
+                        <>
+                            <div className='hazy-orb-1' />
+                            <div className='hazy-orb-2' />
+                            <div className='hazy-orb-3' />
+                        </>
+                    )}
                     <Router history={history}>
                         <Switch>
                             <Route path={'/auth'}>

@@ -1,94 +1,73 @@
 # 🌫️ HazyTheme for Pterodactyl
 
-HazyTheme is a premium-feel, glassmorphism-based theme for the Pterodactyl Panel. It features a modern sidebar layout, collapsible navigation, and real-time circular resource graphs.
-
----
-
-## 📋 Prerequisites
-
-Before installing, ensure your server meets these requirements:
-- **Node.js:** 20.x or 22.x
-- **Yarn:** Latest version (`npm install --global yarn`)
-- **Pterodactyl Panel:** 1.11.x or newer (recommended)
-
----
-
-## 🚀 Installation (Live VPS / Production)
-
-If you are installing this on your live server, follow these steps in order:
-
-### 1. Upload & Extract
-Upload the `hazytheme.zip` to your panel's root directory (usually `/var/www/pterodactyl`).
-```bash
-cd /var/www/pterodactyl
-unzip -o hazytheme.zip
-chown -R www-data:www-data *
-```
-
-### 2. Install Theme Dependencies
-This theme requires specific packages for icons and graphs.
-```bash
-yarn add lucide-react react-circular-progressbar
-```
-
-### 3. Build the Production Assets (CRITICAL)
-**If you skip this step, the theme will NOT appear.** This compiles the React code.
-```bash
-yarn build:production
-```
-
-### 4. Clear the Cache
-```bash
-php artisan view:clear
-php artisan config:clear
-php artisan optimize
-```
-
----
-
-## 🧪 Installation (CodeSandbox / Testing)
-
-For testing in CodeSandbox, use the provided helper script:
-
-1. Open the terminal in CodeSandbox.
-2. Run the script:
-   ```bash
-   chmod +x install-hazytheme.sh
-   ./install-hazytheme.sh
-   ```
-3. Start the preview:
-   ```bash
-   php artisan serve --port=8080
-   ```
-
----
-
-## ❌ Troubleshooting (Changes not showing?)
-
-If you installed the theme but the panel still looks old:
-
-1. **Did the Build Finish?**
-   Check the output of `yarn build:production`. It should say "Success" and show a list of generated files. If it fails with "Command not found", you need to install Node/Yarn.
-
-2. **Clear Browser Cache:**
-   Your browser often saves the old panel files. Press `CTRL + F5` to force a hard refresh.
-
-3. **Check File Paths:**
-   Ensure `resources/scripts/routers/DashboardRouter.tsx` was actually replaced. Open the file and look for `import HazySidebar from '@/components/hazy/HazySidebar';`.
-
-4. **Storage Permissions:**
-   Ensure the `storage` folder is writable so Laravel can clear the view cache.
-   ```bash
-   chmod -R 777 storage/framework/views
-   ```
-
----
+An ultra-modern, glassmorphism-based theme for Pterodactyl.
 
 ## ✨ Features
-- **Sidebar Layout:** A clean, modern navigation bar on the left.
-- **Glassmorphism:** Elegant transparency and blur effects.
-- **Collapsible Menu:** Save screen space with a toggleable sidebar.
-- **Circular Graphs:** Beautiful CPU and Memory usage visualizations.
+*   **Glassmorphism UI:** Translucent panels with backdrop blur.
+*   **Modern Sidebar:** Collapsible sidebar with high-quality icons.
+*   **Animated Orbs:** Ambient background animations.
+*   **Admin Management:** Built-in settings page in the Pterodactyl Admin area.
+*   **Dynamic Customization:** Change colors and toggle features without editing code.
 
-## 📝 Credits
-Built with ❤️ for the Pterodactyl Community.
+## 🛠️ Admin Panel Management
+You can manage HazyTheme settings directly from your Pterodactyl Admin panel:
+1. Go to **Admin Panel** > **Settings** > **HazyTheme**.
+2. From there you can:
+   *   Change the **Primary Accent Color**.
+   *   Toggle **Background Animations** (Ambient Orbs).
+   *   Toggle **Sidebar Power Buttons** (Quick actions).
+   *   Switch between **Dark** and **Light** modes.
+
+---
+
+## 🚀 Installation (Live VPS)
+
+1. **Upload Files:**
+   Upload the theme files to your Pterodactyl directory (usually `/var/www/pterodactyl`).
+
+2. **Run Installation Script:**
+   ```bash
+   bash install-hazytheme.sh
+   ```
+
+3. **Manual Steps (If script fails):**
+   ```bash
+   yarn install
+   yarn build:production
+   php artisan view:clear
+   php artisan config:clear
+   ```
+
+---
+
+## 🏗️ Sandbox Installation (CodeSandbox/Testing)
+
+If you are testing in a restricted environment:
+
+1. **Run the Super One-Liner:**
+   ```bash
+   bash install-hazytheme.sh && php artisan serve --port=8080
+   ```
+
+2. **Access the Panel:**
+   Open the port 8080 preview.
+
+---
+
+## 📂 Manual Code Integration
+If you prefer manual installation, ensure these files are updated:
+*   **Routes:** `routes/admin.php` must include HazyTheme settings routes.
+*   **Composer:** `app/Http/ViewComposers/AssetComposer.php` must inject `hazytheme` settings.
+*   **App:** `resources/scripts/components/App.tsx` must handle the dynamic styles.
+*   **Sidebar:** `resources/scripts/routers/DashboardRouter.tsx` & `ServerRouter.tsx` must import `HazySidebar` and `HazyNavbar`.
+
+---
+
+## ❓ Troubleshooting
+
+*   **Changes not appearing?**
+    Run `php artisan view:clear` and refresh your browser cache (Ctrl+F5).
+*   **Build error?**
+    Ensure you are using Node.js 16+ (preferably 20) and have run `yarn install`.
+*   **Admin tab missing?**
+    Check that `resources/views/partials/admin/settings/nav.blade.php` was updated.

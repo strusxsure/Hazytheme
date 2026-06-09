@@ -1,0 +1,26 @@
+yarn run v1.22.22
+$ yarn run clean && cross-env NODE_ENV=production ./node_modules/.bin/webpack --mode production
+$ cd public/assets && find . \( -name "*.js" -o -name "*.map" \) -type f -delete
+(node:2646075) [DEP0180] DeprecationWarning: fs.Stats constructor is deprecated.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+warn - As of Tailwind CSS v3.3, the `@tailwindcss/line-clamp` plugin is now included by default.
+warn - Remove it from the `plugins` array in your configuration to eliminate this warning.
+assets by status 44.6 KiB [cached] 1 asset
+assets by path *.js 3.03 MiB
+  assets by status 2.79 MiB [big]
+    assets by chunk 2.02 MiB (id hint: vendors)
+      asset 715.9de850f6.js 1.5 MiB [emitted] [immutable] [minimized] [big] (id hint: vendors)
+      asset 24.b6d60616.js 535 KiB [emitted] [immutable] [minimized] [big] (id hint: vendors)
+    asset bundle.1413569a.js 522 KiB [emitted] [immutable] [minimized] [big] (name: main)
+    asset 856.f8b168cb.js 261 KiB [emitted] [immutable] [minimized] [big]
+  + 13 assets
+asset manifest.json 2.8 KiB [emitted] [compared for emit]
+orphan modules 3.73 MiB [orphan] 3254 modules
+runtime modules 7.81 KiB 12 modules
+cacheable modules 7.6 MiB (javascript) 44.6 KiB (asset)
+  modules by path ./node_modules/ 6.78 MiB (javascript) 44.6 KiB (asset) 252 modules
+  modules by path ./resources/scripts/ 846 KiB 84 modules
+  data:image/svg+xml,%3Csvg xmlns=%27.. 276 bytes [built] [code generated]
+webpack 5.105.2 compiled successfully in 49123 ms
+Done in 51.05s.

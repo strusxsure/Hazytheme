@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { LayoutDashboard, User, ShieldAlert, LogOut, ChevronLeft, ChevronRight } from 'lucide-react';
+import { LayoutDashboard, User, ShieldAlert, LogOut, ChevronLeft, ChevronRight, Power, RefreshCw, Square } from 'lucide-react';
 import { useStoreState } from 'easy-peasy';
 import http from '@/api/http';
 
@@ -11,6 +11,8 @@ const HazySidebar = () => {
     );
     const rootAdmin = useStoreState((state: any) => state.user.data?.rootAdmin);
     const username = useStoreState((state: any) => state.user.data?.username);
+    const settings = useStoreState((state: any) => state.settings.data?.hazytheme);
+    const primaryColor = settings?.primary_color || '#6366f1';
 
     useEffect(() => {
         localStorage.setItem('hazy_sidebar_collapsed', JSON.stringify(collapsed));
@@ -30,7 +32,7 @@ const HazySidebar = () => {
         >
             <div className='p-4 flex items-center justify-between mb-8'>
                 {!collapsed && (
-                    <span className='text-xl font-bold bg-gradient-to-r from-violet-400 to-indigo-400 bg-clip-text text-transparent'>
+                    <span className='text-xl font-bold bg-clip-text text-transparent' style={{ backgroundImage: `linear-gradient(to right, ${primaryColor}, ${primaryColor}cc)` }}>
                         HazyTheme
                     </span>
                 )}
@@ -46,16 +48,16 @@ const HazySidebar = () => {
                 <NavLink
                     to='/'
                     exact
-                    activeClassName='text-violet-400 bg-violet-500/10 !border-l-4 border-violet-400'
-                    className='flex items-center p-3 text-slate-400 hover:text-violet-400 rounded-xl transition-all border-l-4 border-transparent'
+                    activeStyle={{ color: primaryColor, backgroundColor: `${primaryColor}1a`, borderLeftColor: primaryColor }}
+                    className='flex items-center p-3 text-slate-400 hover:text-slate-200 rounded-xl transition-all border-l-4 border-transparent'
                 >
                     <LayoutDashboard size={24} className='min-w-[24px]' />
                     {!collapsed && <span className='ml-4 font-medium'>Dashboard</span>}
                 </NavLink>
                 <NavLink
                     to='/account'
-                    activeClassName='text-violet-400 bg-violet-500/10 !border-l-4 border-violet-400'
-                    className='flex items-center p-3 text-slate-400 hover:text-violet-400 rounded-xl transition-all border-l-4 border-transparent'
+                    activeStyle={{ color: primaryColor, backgroundColor: `${primaryColor}1a`, borderLeftColor: primaryColor }}
+                    className='flex items-center p-3 text-slate-400 hover:text-slate-200 rounded-xl transition-all border-l-4 border-transparent'
                 >
                     <User size={24} className='min-w-[24px]' />
                     {!collapsed && <span className='ml-4 font-medium'>Account</span>}
@@ -63,7 +65,7 @@ const HazySidebar = () => {
                 {rootAdmin && (
                     <a
                         href='/admin'
-                        className='flex items-center p-3 text-slate-400 hover:text-violet-400 rounded-xl transition-all border-l-4 border-transparent'
+                        className='flex items-center p-3 text-slate-400 hover:text-slate-200 rounded-xl transition-all border-l-4 border-transparent'
                     >
                         <ShieldAlert size={24} className='min-w-[24px]' />
                         {!collapsed && <span className='ml-4 font-medium'>Admin</span>}
@@ -71,11 +73,25 @@ const HazySidebar = () => {
                 )}
             </nav>
 
+            {settings?.sidebar_power && !collapsed && (
+                <div className='px-4 py-2 mx-4 mb-4 glass rounded-2xl flex justify-around items-center border border-white/5'>
+                    <button className='p-2 text-emerald-400 hover:bg-emerald-500/20 rounded-lg transition-colors' title='Start All'>
+                        <Power size={18} />
+                    </button>
+                    <button className='p-2 text-amber-400 hover:bg-amber-500/20 rounded-lg transition-colors' title='Restart All'>
+                        <RefreshCw size={18} />
+                    </button>
+                    <button className='p-2 text-red-400 hover:bg-red-500/20 rounded-lg transition-colors' title='Stop All'>
+                        <Square size={18} />
+                    </button>
+                </div>
+            )}
+
             <div className='p-4 mt-auto border-t border-white/5 space-y-4'>
                 {!collapsed && <div className='px-2 text-sm font-semibold truncate text-slate-300'>{username}</div>}
                 <button
                     onClick={onLogout}
-                    className='w-full flex items-center p-3 text-red-400 hover:bg-red-500/10 rounded-xl transition-all'
+                    className='w-full flex items-center p-3 text-red-400 hover:bg-red-500/20 rounded-xl transition-all'
                 >
                     <LogOut size={24} className='min-w-[24px]' />
                     {!collapsed && <span className='ml-4 font-medium'>Logout</span>}

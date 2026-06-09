@@ -6,9 +6,11 @@ import { bytesToString } from '@/lib/formatters';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { Power, Server as ServerIcon } from 'lucide-react';
+import { useStoreState } from 'easy-peasy';
 
 const HazyServerCard = ({ server }: any) => {
     const [stats, setStats] = useState<any>(null);
+    const primaryColor = useStoreState((state: any) => state.settings.data?.hazytheme?.primary_color || '#6366f1');
 
     useEffect(() => {
         const f = () => getServerResourceUsage(server.uuid).then(setStats).catch(console.error);
@@ -24,15 +26,16 @@ const HazyServerCard = ({ server }: any) => {
         <motion.div
             whileHover={{ scale: 1.02, y: -5 }}
             className='group glass rounded-3xl p-6 border border-white/10 hover:border-violet-500/50 transition-all duration-300'
+            style={{ '--tw-border-opacity': 1, borderColor: `${primaryColor}33` } as any}
         >
             <Link to={`/server/${server.id}`} className='block'>
                 <div className='flex justify-between mb-8'>
                     <div className='flex items-center space-x-4'>
-                        <div className='p-4 bg-violet-500/10 rounded-2xl text-violet-400 group-hover:bg-violet-500 group-hover:text-white transition-all duration-500'>
+                        <div className='p-4 bg-violet-500/10 rounded-2xl transition-all duration-500' style={{ backgroundColor: `${primaryColor}1a`, color: primaryColor }}>
                             <ServerIcon size={28} />
                         </div>
                         <div>
-                            <h3 className='text-xl font-bold text-slate-100 group-hover:text-violet-400 transition-colors truncate max-w-[180px]'>
+                            <h3 className='text-xl font-bold text-slate-100 group-hover:text-violet-400 transition-colors truncate max-w-[180px]' style={{ '--tw-text-opacity': 1, color: undefined } as any}>
                                 {server.name}
                             </h3>
                             <div className='flex items-center space-x-2 mt-1'>
@@ -59,7 +62,7 @@ const HazyServerCard = ({ server }: any) => {
                                 value={cpu}
                                 strokeWidth={10}
                                 styles={buildStyles({
-                                    pathColor: '#a78bfa',
+                                    pathColor: primaryColor,
                                     trailColor: 'rgba(255,255,255,0.03)',
                                     pathTransitionDuration: 1.5,
                                 })}
@@ -76,7 +79,7 @@ const HazyServerCard = ({ server }: any) => {
                                 value={ram}
                                 strokeWidth={10}
                                 styles={buildStyles({
-                                    pathColor: '#8b5cf6',
+                                    pathColor: primaryColor,
                                     trailColor: 'rgba(255,255,255,0.03)',
                                     pathTransitionDuration: 1.5,
                                 })}
@@ -93,7 +96,7 @@ const HazyServerCard = ({ server }: any) => {
                                 value={20}
                                 strokeWidth={10}
                                 styles={buildStyles({
-                                    pathColor: '#c4b5fd',
+                                    pathColor: primaryColor,
                                     trailColor: 'rgba(255,255,255,0.03)',
                                     pathTransitionDuration: 1.5,
                                 })}

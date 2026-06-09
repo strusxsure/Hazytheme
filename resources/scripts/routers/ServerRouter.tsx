@@ -2,7 +2,7 @@ import HazySidebar from '@/components/hazy/HazySidebar';
 import TransferListener from '@/components/server/TransferListener';
 import React, { useEffect, useState } from 'react';
 import { NavLink, Route, Switch, useRouteMatch } from 'react-router-dom';
-import NavigationBar from '@/components/NavigationBar';
+import HazyNavbar from '@/components/hazy/HazyNavbar';
 import TransitionRouter from '@/TransitionRouter';
 import WebsocketHandler from '@/components/server/WebsocketHandler';
 import { ServerContext } from '@/state/server';
@@ -67,7 +67,7 @@ export default () => {
         <div className={'flex min-h-screen'}>
             <HazySidebar />
             <div className={'flex-1 pl-[72px] md:pl-[260px] transition-all'}>
-                <NavigationBar />
+                <HazyNavbar />
                 {!uuid || !id ? (
                     error ? (
                         <ServerError message={error} />
