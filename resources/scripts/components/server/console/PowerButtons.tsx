@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Button } from '@/components/elements/button/index';
 import Can from '@/components/elements/Can';
 import { ServerContext } from '@/state/server';
 import { PowerAction } from '@/components/server/console/ServerConsoleContainer';
 import { Dialog } from '@/components/elements/dialog';
+import HazyButton from '@/components/hazy/elements/HazyButton';
+import { Power, RefreshCw, Square } from 'lucide-react';
 
 interface PowerButtonProps {
     className?: string;
@@ -49,27 +50,37 @@ export default ({ className }: PowerButtonProps) => {
                 Forcibly stopping a server can lead to data corruption.
             </Dialog.Confirm>
             <Can action={'control.start'}>
-                <Button
-                    className={'flex-1'}
+                <HazyButton
+                    variant='primary'
                     disabled={status !== 'offline'}
                     onClick={onButtonClick.bind(this, 'start')}
+                    className='px-4'
                 >
-                    Start
-                </Button>
+                    <Power size={18} />
+                    <span>Start</span>
+                </HazyButton>
             </Can>
             <Can action={'control.restart'}>
-                <Button.Text className={'flex-1'} disabled={!status} onClick={onButtonClick.bind(this, 'restart')}>
-                    Restart
-                </Button.Text>
+                <HazyButton
+                    variant='glass'
+                    disabled={!status}
+                    onClick={onButtonClick.bind(this, 'restart')}
+                    className='px-4'
+                >
+                    <RefreshCw size={18} />
+                    <span>Restart</span>
+                </HazyButton>
             </Can>
             <Can action={'control.stop'}>
-                <Button.Danger
-                    className={'flex-1'}
+                <HazyButton
+                    variant='danger'
                     disabled={status === 'offline'}
                     onClick={onButtonClick.bind(this, killable ? 'kill' : 'stop')}
+                    className='px-4'
                 >
-                    {killable ? 'Kill' : 'Stop'}
-                </Button.Danger>
+                    <Square size={18} />
+                    <span>{killable ? 'Kill' : 'Stop'}</span>
+                </HazyButton>
             </Can>
         </div>
     );

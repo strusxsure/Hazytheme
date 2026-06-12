@@ -1,23 +1,26 @@
-# 🌫️ HazyTheme for Pterodactyl
+# 🌫️ HazyTheme ULTRA v2.0 for Pterodactyl
 
-## 🚀 One-Click Installation (SAFE)
+Experience the most advanced, high-performance glassmorphism theme for Pterodactyl.
 
-Run this single command in your Pterodactyl root directory (usually `/var/www/pterodactyl`):
+## ✨ Features (ULTRA v2.0)
+- **High-End Glassmorphism:** Deep backdrop blur and translucent surfaces.
+- **Dynamic Backgrounds:** Animated radial orbs that breathe with the panel.
+- **Redesigned Dashboard:** Premium grid layout with high-fidelity server cards.
+- **Advanced Console:** Massive 7xl layout with custom resource tracking and terminal styling.
+- **Motion UI:** Smooth scaling, rotation, and fade-up animations.
+- **Admin Control:** Manage colors, orbs, and power actions from the Admin Panel.
+
+## 🚀 One-Click ULTRA Installation
+
+Run this command in your Pterodactyl root (`/var/www/pterodactyl`):
 
 ```bash
 bash <(curl -s https://raw.githubusercontent.com/[REPO_PATH]/[BRANCH]/install-hazy.sh)
 ```
 
-*Note: Since this is a custom installation, please ensure you have a backup of your files. This script will NOT reset your database or encryption keys.*
+*Note: This script is non-destructive and will not reset your database or encryption keys.*
 
-## ✨ Features
-- Modern Glassmorphism UI
-- Admin Panel Management (Settings > HazyTheme)
-- Dynamic Colors & Animations
-- Collapsible Sidebar
-- Quick Power Actions
-
-## 🛠️ Requirements
-- Pterodactyl Panel 1.11.x
-- Node.js & Yarn
-- Composer
+## 🛠️ Technical Details
+- Built with React, Tailwind, and Framer Motion.
+- Uses Lucide-React for premium iconography.
+- Custom state management via Easy-Peasy for live theme updates.

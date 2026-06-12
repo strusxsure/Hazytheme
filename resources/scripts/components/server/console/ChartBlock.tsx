@@ -1,6 +1,4 @@
 import React from 'react';
-import classNames from 'classnames';
-import styles from '@/components/server/console/style.module.css';
 
 interface ChartBlockProps {
     title: string;
@@ -9,13 +7,13 @@ interface ChartBlockProps {
 }
 
 export default ({ title, legend, children }: ChartBlockProps) => (
-    <div className={classNames(styles.chart_container, 'group')}>
-        <div className={'flex items-center justify-between px-4 py-2'}>
-            <h3 className={'font-header font-medium transition-colors duration-100 group-hover:text-gray-50'}>
+    <div className='glass rounded-3xl p-6 border border-white/5 transition-all duration-300 hover:border-white/10 group'>
+        <div className='flex items-center justify-between mb-6'>
+            <h3 className='text-xs font-black text-slate-500 uppercase tracking-widest group-hover:text-slate-300 transition-colors'>
                 {title}
             </h3>
-            {legend && <p className={'text-sm flex items-center'}>{legend}</p>}
+            {legend && <div className='flex items-center space-x-2'>{legend}</div>}
         </div>
-        <div className={'z-10 ml-2'}>{children}</div>
+        <div className='relative h-[200px]'>{children}</div>
     </div>
 );

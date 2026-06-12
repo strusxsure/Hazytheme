@@ -9,58 +9,25 @@ import Console from '@/components/server/console/Console';
 import StatGraphs from '@/components/server/console/StatGraphs';
 import PowerButtons from '@/components/server/console/PowerButtons';
 import ServerDetailsBlock from '@/components/server/console/ServerDetailsBlock';
-import { Alert } from '@/components/elements/alert';
-
-export type PowerAction = 'start' | 'stop' | 'restart' | 'kill';
-
 const ServerConsoleContainer = () => {
     const name = ServerContext.useStoreState((state) => state.server.data!.name);
     const description = ServerContext.useStoreState((state) => state.server.data!.description);
-    const isInstalling = ServerContext.useStoreState((state) => state.server.isInstalling);
-    const isTransferring = ServerContext.useStoreState((state) => state.server.data!.isTransferring);
     const eggFeatures = ServerContext.useStoreState((state) => state.server.data!.eggFeatures, isEqual);
-    const isNodeUnderMaintenance = ServerContext.useStoreState((state) => state.server.data!.isNodeUnderMaintenance);
-
     return (
         <ServerContentBlock title={'Console'}>
-            {(isNodeUnderMaintenance || isInstalling || isTransferring) && (
-                <Alert type={'warning'} className={'mb-4'}>
-                    {isNodeUnderMaintenance
-                        ? 'The node of this server is currently under maintenance and all actions are unavailable.'
-                        : isInstalling
-                        ? 'This server is currently running its installation process and most actions are unavailable.'
-                        : 'This server is currently being transferred to another node and all actions are unavailable.'}
-                </Alert>
-            )}
-            <div className={'grid grid-cols-4 gap-4 mb-4'}>
-                <div className={'hidden sm:block sm:col-span-2 lg:col-span-3 pr-4'}>
-                    <h1 className={'font-header font-medium text-2xl text-gray-50 leading-relaxed line-clamp-1'}>
-                        {name}
-                    </h1>
-                    <p className={'text-sm line-clamp-2'}>{description}</p>
+            <div className='animate-fade-up'>
+                <div className='flex flex-col lg:flex-row justify-between items-start lg:items-center mb-10 gap-8'>
+                    <div><h1 className='text-5xl font-black text-white tracking-tighter mb-2'>{name}</h1><p className='text-slate-400 font-medium text-lg'>{description}</p></div>
+                    <div className='glass-light p-3 rounded-[1.5rem] border border-white/5'><Can action={['control.start', 'control.stop', 'control.restart']} matchAny><PowerButtons className={'flex space-x-4'} /></Can></div>
                 </div>
-                <div className={'col-span-4 sm:col-span-2 lg:col-span-1 self-end'}>
-                    <Can action={['control.start', 'control.stop', 'control.restart']} matchAny>
-                        <PowerButtons className={'flex sm:justify-end space-x-2'} />
-                    </Can>
+                <div className='grid grid-cols-12 gap-8 mb-10'>
+                    <div className='col-span-12 lg:col-span-9'><div className='glass-heavy rounded-[2.5rem] border border-white/10 overflow-hidden shadow-2xl shadow-black/50'><Spinner.Suspense><Console /></Spinner.Suspense></div></div>
+                    <div className='col-span-12 lg:col-span-3'><div className='glass rounded-[2.5rem] p-8 border border-white/10 h-full'><h3 className='text-xs font-black text-slate-500 uppercase tracking-[0.2em] mb-8'>Environment</h3><ServerDetailsBlock /></div></div>
                 </div>
-            </div>
-            <div className={'grid grid-cols-4 gap-2 sm:gap-4 mb-4'}>
-                <div className={'flex col-span-4 lg:col-span-3'}>
-                    <Spinner.Suspense>
-                        <Console />
-                    </Spinner.Suspense>
-                </div>
-                <ServerDetailsBlock className={'col-span-4 lg:col-span-1 order-last lg:order-none'} />
-            </div>
-            <div className={'grid grid-cols-1 md:grid-cols-3 gap-2 sm:gap-4'}>
-                <Spinner.Suspense>
-                    <StatGraphs />
-                </Spinner.Suspense>
+                <div className='grid grid-cols-1 md:grid-cols-3 gap-8'><Spinner.Suspense><StatGraphs /></Spinner.Suspense></div>
             </div>
             <Features enabled={eggFeatures} />
         </ServerContentBlock>
     );
 };
-
 export default memo(ServerConsoleContainer, isEqual);
