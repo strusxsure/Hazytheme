@@ -2,7 +2,7 @@ import HazySidebar from '@/components/hazy/HazySidebar';
 import React from 'react';
 import { NavLink, Route, Switch } from 'react-router-dom';
 import HazyNavbar from '@/components/hazy/HazyNavbar';
-import DashboardContainer from '@/components/dashboard/DashboardContainer';
+omponents/dashboard/DashboardContainer';/a import HazyDashboard from '@/components/hazy/HazyDashboard';
 import { NotFound } from '@/components/elements/ScreenBlock';
 import TransitionRouter from '@/TransitionRouter';
 import SubNavigation from '@/components/elements/SubNavigation';
@@ -35,7 +35,7 @@ export default () => {
                     <React.Suspense fallback={<Spinner centered />}>
                         <Switch location={location}>
                             <Route path={'/'} exact>
-                                <DashboardContainer />
+                                <HazyDashboard />
                             </Route>
                             {routes.account.map(({ path, component: Component }) => (
                                 <Route key={path} path={`/account/${path}`.replace('//', '/')} exact>
