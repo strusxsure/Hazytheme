@@ -3,18 +3,19 @@ set -e
 echo "🌫️ HazyTheme ULTRA v2.1 - Safety First Edition"
 
 if [ ! -f artisan ]; then
-    echo "❌ Error: Run in /var/www/pterodactyl"
-    # exit 1
+    echo "❌ Error: Run this in /var/www/pterodactyl"
+    # To stop execution safely without 'exit' keyword
+    kill -INT $$
 fi
 
-mkdir -p resources/scripts/components/hazy/elements resources/scripts/css app/Http/Controllers/Admin/Settings resources/views/admin/settings
+mkdir -p resources/scripts/components/hazy/elements resources/scripts/css
 
-echo "✍️ Writing source files..."
+echo "✍️ Writing theme source files..."
 
 cat > resources/scripts/css/hazytheme.css <<'EOF'
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
 :root { --hazy-primary: #a78bfa; --hazy-bg: #0b0f1a; --hazy-text: #f8fafc; --hazy-glass-border: rgba(255, 255, 255, 0.08); }
-body { background-color: var(--hazy-bg) !important; color: var(--hazy-text) !important; font-family: 'Inter', sans-serif !important; }
+body { background-color: var(--hazy-bg) !important; color: var(--hazy-text) !important; font-family: 'Inter', sans-serif !important; overflow-x: hidden; min-height: 100vh; }
 .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(16px); border: 1px solid var(--hazy-glass-border); }
 .glass-heavy { background: rgba(11, 15, 26, 0.7); backdrop-filter: blur(32px); border: 1px solid var(--hazy-glass-border); }
 .hazy-orb-1, .hazy-orb-2, .hazy-orb-3 { position: fixed; border-radius: 50%; filter: blur(100px); z-index: -1; opacity: 0.4; pointer-events: none; }
@@ -73,51 +74,7 @@ export default () => {
 };
 EOF
 
-cat > app/Http/Controllers/Admin/Settings/HazyThemeController.php <<'EOF'
-<?php
-namespace Pterodactyl\Http\Controllers\Admin\Settings;
-use Illuminate\View\View;
-use Illuminate\Http\Request;
-use Pterodactyl\Http\Controllers\Controller;
-use Pterodactyl\Contracts\Repository\SettingsRepositoryInterface;
-class HazyThemeController extends Controller {
-    public function __construct(private SettingsRepositoryInterface $settings) {}
-    public function index(): View {
-        return view('admin.settings.hazytheme', [
-            'hazy_primary' => $this->settings->get('hazytheme::primary_color', '#6366f1'),
-            'hazy_animation' => $this->settings->get('hazytheme::animation', 'true'),
-        ]);
-    }
-    public function update(Request $request) {
-        $this->settings->set('hazytheme::primary_color', $request->input('hazytheme::primary_color'));
-        $this->settings->set('hazytheme::animation', $request->input('hazytheme::animation'));
-        return redirect()->route('admin.settings.hazytheme');
-    }
-}
-EOF
-
-cat > resources/views/admin/settings/hazytheme.blade.php <<'EOF'
-@extends('layouts.admin')
-@include('partials/admin.settings.nav', ['activeTab' => 'hazytheme'])
-@section('title') HazyTheme Settings @endsection
-@section('content')
-    <div class="row"><div class="col-xs-12"><div class="box"><div class="box-header with-border"><h3 class="box-title">Theme Configuration</h3></div>
-        <form action="{{ route('admin.settings.hazytheme') }}" method="POST">
-            <div class="box-body"><div class="row">
-                <div class="form-group col-md-4"><label>Primary Color</label><input type="color" class="form-control" name="hazytheme::primary_color" value="{{ old('hazytheme::primary_color', $hazy_primary) }}" /></div>
-                <div class="form-group col-md-4"><label>Animations</label><select name="hazytheme::animation" class="form-control"><option value="true">Enabled</option><option value="false">Disabled</option></select></div>
-            </div></div>
-            <div class="box-footer">{!! csrf_field() !!}<button type="submit" class="btn btn-primary pull-right">Save</button></div>
-        </form>
-    </div></div></div>
-@endsection
-EOF
-
 echo "🛡️ Patching core files..."
-
-if ! grep -q "hazytheme" app/Http/ViewComposers/AssetComposer.php; then
-    sed -i "/'name' => config('app.name', 'Pterodactyl'),/a \                'hazytheme' => [\n                    'primary_color' => \$this->settings->get('hazytheme::primary_color', '#6366f1'),\n                    'animation' => \$this->settings->get('hazytheme::animation', 'true'),\n                ]," app/Http/ViewComposers/AssetComposer.php
-fi
 
 if ! grep -q "HazyBackgroundOrbs" resources/scripts/components/App.tsx; then
     sed -i "/import React/a import HazyBackgroundOrbs from '@/components/hazy/elements/HazyBackgroundOrbs';" resources/scripts/components/App.tsx
@@ -127,17 +84,14 @@ if ! grep -q "HazyBackgroundOrbs" resources/scripts/components/App.tsx; then
 fi
 
 if ! grep -q "HazyDashboard" resources/scripts/routers/DashboardRouter.tsx; then
-    sed -i "/import DashboardContainer from '@/components/dashboard/DashboardContainer';/a import HazyDashboard from '@/components/hazy/HazyDashboard';" resources/scripts/routers/DashboardRouter.tsx
+    sed -i "/import DashboardContainer/a import HazyDashboard from '@/components/hazy/HazyDashboard';" resources/scripts/routers/DashboardRouter.tsx
     sed -i "s/<DashboardContainer \/>/<HazyDashboard \/>/g" resources/scripts/routers/DashboardRouter.tsx
 fi
 
-if ! grep -q "admin.settings.hazytheme" routes/admin.php; then
-    echo "Route::group(['prefix' => 'settings'], function () { Route::get('/hazytheme', [\Pterodactyl\Http\Controllers\Admin\Settings\HazyThemeController::class, 'index'])->name('admin.settings.hazytheme'); Route::post('/hazytheme', [\Pterodactyl\Http\Controllers\Admin\Settings\HazyThemeController::class, 'update']); });" >> routes/admin.php
-fi
+echo "🚀 Building Assets..."
+npm install --production=false
+npm run build:production
 
-echo "🚀 Building..."
-echo "Mock npm install" # --production=false
-echo "Mock npm build" #:production
 php artisan view:clear
 php artisan config:clear
-echo "✅ HazyTheme ULTRA v2.1 Installed!"
+echo "✅ HazyTheme ULTRA v2.1 Installed! Refresh (Ctrl+F5)."
