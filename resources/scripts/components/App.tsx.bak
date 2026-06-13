@@ -2,8 +2,6 @@ import React, { lazy, useEffect } from 'react';
 import { hot } from 'react-hot-loader/root';
 import { Route, Router, Switch } from 'react-router-dom';
 import { StoreProvider } from 'easy-peasy';
-import { useStoreState } from 'easy-peasy';
-import '@/css/hazytheme.css';
 import { store } from '@/state';
 import { SiteSettings } from '@/state/settings';
 import ProgressBar from '@/components/elements/ProgressBar';
@@ -41,10 +39,6 @@ interface ExtendedWindow extends Window {
 setupInterceptors(history);
 
 const App = () => {
-const hazy = useStoreState((state: any) => state.settings.data?.hazytheme);
-    useEffect(() => {
-        if (hazy?.primary_color) document.documentElement.style.setProperty('--hazy-primary', hazy.primary_color);
-    }, [hazy]);
     const { PterodactylUser, SiteConfiguration } = window as ExtendedWindow;
 
     useEffect(() => {
@@ -82,7 +76,6 @@ const hazy = useStoreState((state: any) => state.settings.data?.hazytheme);
     return (
         <>
             <GlobalStylesheet />
-                    <HazyBackgroundOrbs />
             <StoreProvider store={store}>
                 <ProgressBar />
                 <div css={tw`mx-auto w-auto`}>
